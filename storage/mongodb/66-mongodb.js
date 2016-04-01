@@ -83,6 +83,7 @@ module.exports = function(RED) {
                         delete msg._topic;
                         delete msg.collection;
                         if (node.operation === "store") {
+                            var nb; // Number of items inserted
                             if (node.payonly) {
                                 if (typeof msg.payload !== "object") {
                                     msg.payload = {"payload": msg.payload};
@@ -94,15 +95,19 @@ module.exports = function(RED) {
                                     if (err) {
                                         node.error(err,msg);
                                     }
+                                    nb = Array.isArray(msg.payload) ? msg.payload.length : 1;
                                 });
                             } else {
                                 coll.save(msg,function(err, item) {
                                     if (err) {
                                         node.error(err,msg);
                                     }
+                                    nb = Array.isArray(msg) ? msg.length : 1;
                                 });
                             }
+                            node.send({ collection: coll.collectionName, rows: nb });
                         } else if (node.operation === "insert") {
+                            var nb; // Number of items inserted
                             if (node.payonly) {
                                 if (typeof msg.payload !== "object") {
                                     msg.payload = {"payload": msg.payload};
@@ -114,14 +119,17 @@ module.exports = function(RED) {
                                     if (err) {
                                         node.error(err,msg);
                                     }
+                                    nb = Array.isArray(msg.payload) ? msg.payload.length : 1;
                                 });
                             } else {
                                 coll.insert(msg, function(err,item) {
                                     if (err) {
                                         node.error(err,msg);
-                                    }
+                                    }                                    
+                                    nb = Array.isArray(msg) ? msg.length : 1;
                                 });
                             }
+                            node.send({ collection: coll.collectionName, rows: nb });
                         } else if (node.operation === "update") {
                             if (typeof msg.payload !== "object") {
                                 msg.payload = {"payload": msg.payload};
@@ -137,12 +145,14 @@ module.exports = function(RED) {
                                 if (err) {
                                     node.error(err,msg);
                                 }
+                                node.send({ collection: coll.collectionName, rows: item });
                             });
                         } else if (node.operation === "delete") {
                             coll.remove(msg.payload, function(err, items) {
                                 if (err) {
                                     node.error(err,msg);
                                 }
+                                node.send({ collection: coll.collectionName, rows: items });
                             });
                         }
                     });
