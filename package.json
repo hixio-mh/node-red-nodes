@@ -26,7 +26,7 @@
         "should": "7.0.1",
         "sinon": "1.15.4",
         "supertest": "1.0.1",
-        "proxyquire": "1.6.0",
+        "proxyquire": "1.8.0",
         "pushbullet": "1.4.*",
         "when": "^3.6.4",
         "exif": "0.4.0",
