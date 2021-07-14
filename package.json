@@ -24,7 +24,7 @@
         "grunt-jscs": "1.8.*",
         "mocha": "2.2.5",
         "should": "7.0.1",
-        "sinon": "1.15.4",
+        "sinon": "1.17.7",
         "supertest": "1.0.1",
         "proxyquire": "1.6.0",
         "pushbullet": "1.4.*",
